@@ -71,7 +71,7 @@ wss.on("connection", (socket) => {
             }
 
             users.map((e: any) => {
-                e.socket.send({ message: parsedMessage.payload.message, name: e.name })
+                e.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: e.name }))
             })
 
 

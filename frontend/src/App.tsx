@@ -35,7 +35,10 @@ function App() {
     SetSocket(ws);
 
     ws.onmessage = (message)=>{
-      setData(m=>[...m, {"name":message.data.name , "message":message.data.message}]);
+
+      const messageData = JSON.parse(message.data);
+     setData(m => [...m, { "name": messageData.name, "message": messageData.message }]);
+      console.log(data);
     }
 
   } ,[])
@@ -66,11 +69,14 @@ function App() {
 
           <div className='h-[80vh] bg-black w-full rounded-md p-2 mb-2 text-white overflow-auto' >
 
-            {data.map((msg , index)=>(
-              <div key={index} className='mb-1 bg-gray-800 p-2 rounded-md'>
-                {msg.message}
-              </div>
-            ))}
+            <div className="chat-container">
+  {data.map((item, index) => (
+    <div key={index} className="message">
+      <strong>{item.name}:</strong> {item.message}
+      
+    </div>
+  ))}
+</div>
 
           </div>
 

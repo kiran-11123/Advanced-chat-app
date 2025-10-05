@@ -19,8 +19,7 @@ wss.on("connection", (socket) => {
                 name
             });
         }
-        console.log(allSockets);
-        if (parsedMessage.type === "chat") {
+        else if (parsedMessage.type === "chat") {
             //const currentUserRoom = allSockets.find((x) =>x.socket === socket);
             const message = parsedMessage.payload.message;
             let currentUserRoom = null;
@@ -37,12 +36,14 @@ wss.on("connection", (socket) => {
                 return; // Or send an error back to the socket
             }
             const users = allSockets.get(currentUserRoom);
+            console.log(users);
             if (users.length == 0) {
                 console.error("No one Present in the room");
             }
             users.map((e) => {
-                e.socket.send(parsedMessage.payload.message);
+                e.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: e.name }));
             });
         }
+        console.log(allSockets);
     });
 });
