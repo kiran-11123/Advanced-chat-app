@@ -3,12 +3,9 @@ import { WebSocketServer } from "ws";
 const wss = new WebSocketServer({ port: 8081 });
 
 
-interface User{
-     socket:WebSocket;
-     room:string;
-}
 
-let allSockets:User[] = [];
+
+let allSockets = new Map();
 
 wss.on("connection", (socket) => {
   console.log("New client connected");
@@ -29,6 +26,12 @@ wss.on("connection", (socket) => {
             socket,
             room : parsedMessage.payload.roomId,
          })
+
+         if(allSockets.has(parsedMessage.payload.room)){
+              
+         }
+
+        
     }
 
     if(parsedMessage.type==="chat"){
