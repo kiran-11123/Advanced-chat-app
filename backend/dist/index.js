@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ws_1 = require("ws");
 const wss = new ws_1.WebSocketServer({ port: 8081 });
-let allSockets = [];
+let allSockets = new Map();
 wss.on("connection", (socket) => {
     console.log("New client connected");
     socket.on("message", (message) => {
@@ -10,26 +10,39 @@ wss.on("connection", (socket) => {
         //@ts-ignore
         const parsedMessage = JSON.parse(message);
         if (parsedMessage.type === "join") {
-            allSockets.push({
-                //@ts-ignore
+            if (!allSockets.has(parsedMessage.payload.room)) {
+                allSockets.set(parsedMessage.payload.room, []);
+            }
+            const name = parsedMessage.payload.name;
+            allSockets.get(parsedMessage.payload.room).push({
                 socket,
-                room: parsedMessage.payload.roomId,
+                name
             });
         }
+        console.log(allSockets);
         if (parsedMessage.type === "chat") {
             //const currentUserRoom = allSockets.find((x) =>x.socket === socket);
+            const message = parsedMessage.payload.message;
             let currentUserRoom = null;
-            for (let i = 0; i < allSockets.length; i++) {
+            for (const [roomId, roomSockets] of allSockets.entries()) {
                 //@ts-ignore
-                if (allSockets[i].socket === socket) {
-                    currentUserRoom = allSockets[i].room;
+                const SocketEntry = roomSockets.find(entry => entry.socket === socket);
+                if (SocketEntry) {
+                    currentUserRoom = roomId;
+                    break; // Found it—exit the loop
                 }
             }
-            for (let i = 0; i < allSockets.length; i++) {
-                if (allSockets[i].room === currentUserRoom) {
-                    allSockets[i].socket.send(parsedMessage.payload.message);
-                }
+            if (!currentUserRoom) {
+                console.error(`Socket not found in any room`);
+                return; // Or send an error back to the socket
             }
+            const users = allSockets.get(currentUserRoom);
+            if (users.length == 0) {
+                console.error("No one Present in the room");
+            }
+            users.map((e) => {
+                e.socket.send(parsedMessage.payload.message);
+            });
         }
     });
 });

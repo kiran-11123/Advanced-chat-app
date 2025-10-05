@@ -9,18 +9,18 @@ function App() {
   const[modelOpen , setOpenModel] = useState(false);
   const[socket , SetSocket] = useState();
   const[message , setMessage] = useState("");
-  const[data , setData] = useState(["Hi there"]);
+  const[data , setData] = useState([{"name":"System" , "message":"Welcome to Chat App"}]);
   function SendMessage(){
        
     if(message.trim()!=""){
       //@ts-ignore  
 
-      socket.send({
-          type:"chat",
-          payload:{
-             message:message
+      socket.send(JSON.stringify({
+          type: "chat",
+          payload: {
+              message: message
           }
-      })
+      }));
     }
   }
 
@@ -35,7 +35,7 @@ function App() {
     SetSocket(ws);
 
     ws.onmessage = (message)=>{
-      setData(m=>[...m, message.data]);
+      setData(m=>[...m, {"name":message.data.name , "message":message.data.message}]);
     }
 
   } ,[])
@@ -68,15 +68,15 @@ function App() {
 
             {data.map((msg , index)=>(
               <div key={index} className='mb-1 bg-gray-800 p-2 rounded-md'>
-                {msg}
+                {msg.message}
               </div>
             ))}
 
           </div>
 
           <div  className='flex items-center justify-between'>
-          <input title="input" type="text"  className='w-full px-4 py-2 rounded-lg shadow-lg'/>
-          <button className='px-4 py-2 bg-green-700 text-white rounded-lg  shadow-lg hover:bg-green-900'>Send</button>
+          <input title="input" type="text"  className='w-full px-4 py-2 rounded-lg shadow-lg' onChange={(e)=>setMessage(e.target.value)}/>
+          <button className='px-4 py-2 bg-green-700 text-white rounded-lg  shadow-lg hover:bg-green-900' onClick={SendMessage}>Send</button>
 
         </div>
 
