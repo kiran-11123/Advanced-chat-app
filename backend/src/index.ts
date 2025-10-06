@@ -72,6 +72,8 @@ wss.on("connection", (socket) => {
                 console.error("No one Present in the room")
             }
 
+            console.log("This is current user room" , users);
+
       
              
             users.map((data: any) => {

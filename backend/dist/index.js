@@ -39,6 +39,7 @@ wss.on("connection", (socket) => {
             if (users.length == 0) {
                 console.error("No one Present in the room");
             }
+            console.log("This is current user room", users);
             users.map((data) => {
                 console.log("This is data", data.name, data.socket);
                 data.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: data.name }));
