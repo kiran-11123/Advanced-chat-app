@@ -72,12 +72,15 @@ wss.on("connection", (socket) => {
                 console.error("No one Present in the room")
             }
 
-            users.map((e: any) => {
-                console.log("This is e" , e);
-                e.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: e.name  }))
+      
+             
+            users.map((data: any) => {
+                console.log("This is data" , data.name , data.socket);
+                data.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: data.name  }))
             })
-
-            console.log(users);
+            
+            //@ts-ignore
+            console.log("this is users" , users.map(user => user.name));
 
 
 

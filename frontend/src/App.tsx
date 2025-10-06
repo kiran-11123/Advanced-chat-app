@@ -22,7 +22,7 @@ function App() {
           }
       }));
 
-      console.log("Message Sent" ,data);;
+      console.log("Message Sent" ,data);
     }
   }
 
@@ -74,6 +74,9 @@ function App() {
             <div className="chat-container  ">
   {data.map((item, index) => (
     <div key={index} className=" py-1 w-full  mb-1 rounded-lg p-2">
+
+      
+     
      
      <strong>{item.name} :</strong> {item.message}
       
