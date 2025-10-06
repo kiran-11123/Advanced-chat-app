@@ -9,7 +9,7 @@ function App() {
   const[modelOpen , setOpenModel] = useState(false);
   const[socket , SetSocket] = useState();
   const[message , setMessage] = useState("");
-  const[data , setData] = useState([{"name":"System" , "message":"Welcome to Chat App"}]);
+  const[data , setData] = useState([{"name":"System" , "message":"Welcome to Chat App" }]);
   function SendMessage(){
        
     if(message.trim()!=""){
@@ -21,6 +21,8 @@ function App() {
               message: message
           }
       }));
+
+      console.log("Message Sent" ,data);;
     }
   }
 
@@ -69,10 +71,11 @@ function App() {
 
           <div className='h-[80vh] bg-black w-full rounded-md p-2 mb-2 text-white overflow-auto' >
 
-            <div className="chat-container">
+            <div className="chat-container  ">
   {data.map((item, index) => (
-    <div key={index} className="message">
-      <strong>{item.name}:</strong> {item.message}
+    <div key={index} className=" py-1 w-full  mb-1 rounded-lg p-2">
+     
+     <strong>{item.name} :</strong> {item.message}
       
     </div>
   ))}

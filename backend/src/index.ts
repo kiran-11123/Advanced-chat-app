@@ -65,20 +65,25 @@ wss.on("connection", (socket) => {
 
 
             const users = allSockets.get(currentUserRoom);
-            console.log(users)
+
+            
+          
             if (users.length == 0) {
                 console.error("No one Present in the room")
             }
 
             users.map((e: any) => {
-                e.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: e.name }))
+                console.log("This is e" , e);
+                e.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: e.name  }))
             })
+
+            console.log(users);
 
 
 
         }
 
-        console.log(allSockets);
+      
 
 
         
