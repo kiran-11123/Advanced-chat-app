@@ -4,10 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "nodemon src/index.ts",
+  "build": "tsc -b",
+  "start": "node dist/index.js"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.14",

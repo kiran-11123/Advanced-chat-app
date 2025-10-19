@@ -73,13 +73,16 @@ wss.on("connection", (socket) => {
             }
 
             console.log("This is current user room" , users);
-
+            
+            
       
              
             users.map((data: any) => {
-                console.log("This is data" , data.name , data.socket);
+                
                 data.socket.send(JSON.stringify({ message: parsedMessage.payload.message, name: data.name  }))
             })
+
+         
             
             //@ts-ignore
             console.log("this is users" , users.map(user => user.name));
